@@ -11,6 +11,14 @@
     layout_width="fill";
     id="coordinatorLayout";
     {
+      import "com.google.android.material.button.MaterialButton";
+      MaterialButton;
+      id="word";
+      layout_width="wrap";
+      text="Hello Word！";
+      layout_height="wrap";
+    };
+    {
       import "com.google.android.material.floatingactionbutton.FloatingActionButton";
       FloatingActionButton;
       layout_gravity="bottom|end";

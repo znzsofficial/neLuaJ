@@ -1,5 +1,6 @@
 package com.androlua;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,17 +9,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 public class Welcome extends Activity {
 
@@ -48,6 +42,7 @@ public class Welcome extends Activity {
         e.printStackTrace();
     }*/
     if (checkInfo()) {
+      LuaApplication.getInstance().setSharedData("UnZiped", false);
       new UpdateTask().execute();
     } else {
       startActivity();
@@ -109,106 +104,52 @@ public class Welcome extends Activity {
     return false;
   }
 
+  @SuppressLint("StaticFieldLeak")
   private class UpdateTask extends AsyncTaskX<String, String, String> {
     @Override
     protected String doInBackground(String[] p1) {
       // TODO: Implement this method
-      onUpdate(mLastTime, mOldLastTime);
+      try {
+        unApk("assets/", localDir);
+      } catch (ZipException e) {
+        e.printStackTrace();
+      }
       return null;
     }
 
-    @Override
     protected void onPostExecute(String result) {
       startActivity();
+      LuaApplication.getInstance().setSharedData("UnZiped", true);
     }
 
-    private void onUpdate(long lastTime, long oldLastTime) {
-      try {
-        // LuaUtil.rmDir(new File(localDir),".lua");
-        // LuaUtil.rmDir(new File(luaMdDir),".lua");
-        unApk("assets", localDir);
-        // unZipAssets("main.alp", extDir);
-      } catch (IOException e) {
-        e.printStackTrace();
+    private void unApk(String dir, String extDir) throws ZipException {
+      File file = new File(extDir);
+      String tempDir = getCacheDir().getPath();
+      rmDir(file);
+      ZipFile zipFile = new ZipFile(getApplicationInfo().publicSourceDir);
+      zipFile.extractFile(dir, tempDir);
+      new File(tempDir + "/" + dir).renameTo(file);
+    }
+
+    private void rmDir(File file, String str) {
+      if (file.isDirectory()) {
+        for (File file2 : file.listFiles()) {
+          rmDir(file2, str);
+        }
+        file.delete();
+      }
+      if (file.getName().endsWith(str)) {
+        file.delete();
       }
     }
-  }
 
-  public void unApk(String dir, String extDir) throws IOException {
-    int i = dir.length() + 1;
-    ZipFile zip = new ZipFile(getApplicationInfo().publicSourceDir);
-    Enumeration<? extends ZipEntry> entries = zip.entries();
-    while (entries.hasMoreElements()) {
-      ZipEntry entry = entries.nextElement();
-      String name = entry.getName();
-      if (name.indexOf(dir) != 0) continue;
-      String path = name.substring(i);
-      if (entry.isDirectory()) {
-        File f = new File(extDir + File.separator + path);
-        if (!f.exists()) {
-          //noinspection ResultOfMethodCallIgnored
-          f.mkdirs();
+    private boolean rmDir(File file) {
+      if (file.isDirectory()) {
+        for (File file2 : file.listFiles()) {
+          rmDir(file2);
         }
-      } else {
-        String fname = extDir + File.separator + path;
-        File ff = new File(fname);
-        File temp = new File(fname).getParentFile();
-        if (!temp.exists()) {
-          if (!temp.mkdirs()) {
-            throw new RuntimeException("create file " + temp.getName() + " fail");
-          }
-        }
-        try {
-          if (ff.exists()
-              && entry.getSize() == ff.length()
-              && getFileMD5(zip.getInputStream(entry)).equals(getFileMD5(ff))) continue;
-        } catch (NullPointerException ignored) {
-        }
-        FileOutputStream out = new FileOutputStream(extDir + File.separator + path);
-        InputStream in = zip.getInputStream(entry);
-        byte[] buf = new byte[40960];
-        int count = 0;
-        while ((count = in.read(buf)) != -1) {
-          out.write(buf, 0, count);
-        }
-        out.close();
-        in.close();
       }
-    }
-    zip.close();
-  }
-
-  public static String getFileMD5(String file) {
-    return getFileMD5(new File(file));
-  }
-
-  public static String getFileMD5(File file) {
-    try {
-      return getFileMD5(new FileInputStream(file));
-    } catch (FileNotFoundException e) {
-      return null;
-    }
-  }
-
-  public static String getFileMD5(InputStream in) {
-    byte buffer[] = new byte[1024 * 1024];
-    int len;
-    try {
-      MessageDigest digest = MessageDigest.getInstance("MD5");
-      while ((len = in.read(buffer)) != -1) {
-        digest.update(buffer, 0, len);
-      }
-      BigInteger bigInt = new BigInteger(1, digest.digest());
-      return bigInt.toString(16);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    } finally {
-      try {
-        in.close();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      return file.delete();
     }
   }
 }

@@ -1,4 +1,6 @@
-{
+local R = import "R"
+
+head = {
   import "android.widget.*";
   LinearLayout;
   gravity="bottom";
@@ -10,22 +12,20 @@
   layout_height="160dp";
   paddingRight="16dp";
   id="heard";
-  BackgroundResource=luajava.bindClass("com.eurya.luaj.R").drawable.side_nav_bar;
+  BackgroundResource=R.drawable.side_nav_bar;
   {
     ImageView;
     layout_height="56dp";
-    paddingTop="16dp";
     id="heard_image";
     layout_width="56dp";
-    BackgroundResource=luajava.bindClass("com.eurya.luaj.R").drawable.ic_launcher;
+    BackgroundResource=R.drawable.ic_material;
   };
   {
     TextView;
-    text="TestLuaJ";
+    text="Material3 in LuaJ++";
     layout_width="match_parent";
     layout_height="wrap_content";
     paddingTop="16dp";
-    textColor=0xffffffff;
     textSize="16sp";
   };
   {
@@ -33,7 +33,8 @@
     layout_height="wrap_content";
     id="textView";
     text="DrawerLayout@Demo";
-    textColor=0xffffffff;
     layout_width="wrap_content";
   };
 };
+
+return head;

@@ -1,10 +1,9 @@
---require "import"
 import "android.app.*"
 import "android.os.*"
 import "android.widget.*"
 import "android.view.*"
 import "com.androlua.*"
-import "com.eurya.luaj.R"
+import "github.znzsofficial.luaj.R"
 import "androidx.core.view.GravityCompat"
 import "com.google.android.material.snackbar.Snackbar"
 import "androidx.coordinatorlayout.widget.CoordinatorLayout"
@@ -13,11 +12,6 @@ import "androidx.appcompat.app.ActionBarDrawerToggle"
 import "com.google.android.material.navigation.NavigationView"
 import "com.google.android.material.floatingactionbutton.FloatingActionButton"
 import "res"
-
-do
-  local _ENV={activity=this,style=luajava.bindClass'com.google.android.material.R$style'}
-  activity.theme=style.Theme_Material3_DayNight
-end
 
 --添加BackHome按钮用来当Drawer的Menu按钮
 actionBar=activity.getSupportActionBar()
@@ -28,10 +22,8 @@ activity.setContentView(res.layout.main)
 toggle = ActionBarDrawerToggle(activity,drawer,R.string.drawer_open, R.string.drawer_close)
 drawer.setDrawerListener(toggle);
 toggle.syncState();
-head=LuaLayout(this)
-navigation.addHeaderView(head.load(res.layout.head))
+navigation.addHeaderView(loadlayout(res.layout.head))
 navigation.inflateMenu(R.menu.activity_main_drawer)
-head.getView("heard_image").setBackgroundResource(R.drawable.ic_launcher)
 
 --navigation的点击事件
 navigation.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener {
@@ -49,14 +41,20 @@ navigation.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSele
   end
 });
 
+--MaterialButton点击事件
+word.onClick = function(view)
+  Snackbar.make(view,"Hello Word~",Snackbar.LENGTH_SHORT).show()
+end
+
 --FloatingActionButton的点击事件
 floatingaction.onClick = function(view)
   Snackbar.make(view,"Hello Word~",Snackbar.LENGTH_SHORT)
   .setAction("OK",{onClick=function()
       print("OK")
-  end})
+    end})
   .show()
 end
+
 --使用home来添加menu按钮
 function onOptionsItemSelected(item)
   local id=item.getItemId()
@@ -73,11 +71,4 @@ function onCreateOptionsMenu(menu)
   menu.add("Setting").onMenuItemClick=function(a)
     print "Setting"
   end
-end
-i=1
-switch i
- case 1
-  print("true")
- case 2
-  print("false")
 end
