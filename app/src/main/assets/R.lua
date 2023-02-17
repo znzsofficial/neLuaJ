@@ -1,0 +1,1 @@
+return luajava.bindClass("github.znzsofficial.luaj.R")
