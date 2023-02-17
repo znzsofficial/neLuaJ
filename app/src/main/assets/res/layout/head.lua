@@ -18,7 +18,7 @@ head = {
     layout_height="56dp";
     id="heard_image";
     layout_width="56dp";
-    BackgroundResource=R.drawable.ic_material;
+    --BackgroundResource=R.drawable.ic_material;
   };
   {
     TextView;

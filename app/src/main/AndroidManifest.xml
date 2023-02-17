@@ -113,7 +113,7 @@
         </activity>
 
         <provider
-            android:name="android.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="github.znzsofficial.luaj"
             android:exported="false"
             android:grantUriPermissions="true" >

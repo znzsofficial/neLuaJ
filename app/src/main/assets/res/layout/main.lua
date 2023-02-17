@@ -11,12 +11,21 @@
     layout_width="fill";
     id="coordinatorLayout";
     {
-      import "com.google.android.material.button.MaterialButton";
-      MaterialButton;
-      id="word";
-      layout_width="wrap";
-      text="Hello Word！";
-      layout_height="wrap";
+      import "android.widget.LinearLayout";
+      LinearLayout;
+      gravity="center";
+      layout_height="fill";
+      orientation="vertical";
+      layout_width="fill";
+      {
+        import "com.google.android.material.button.MaterialButton";
+        MaterialButton;
+        id="mBtn";
+        layout_gravity="center";
+        layout_width="wrap";
+        text="Hello Word！";
+        layout_height="wrap";
+      };
     };
     {
       import "com.google.android.material.floatingactionbutton.FloatingActionButton";
@@ -30,7 +39,7 @@
     };
   };
   {
-    import "android.widget.*";
+    import "android.widget.LinearLayout";
     LinearLayout;
     layout_gravity="start";
     layout_height="fill";
