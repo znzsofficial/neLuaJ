@@ -33,7 +33,7 @@ mainlayout = {
       import "com.google.android.material.floatingactionbutton.FloatingActionButton";
       FloatingActionButton;
       layout_gravity="bottom|end";
-      layout_marginBottom="16dp";
+      layout_marginBottom=this.getResources().getDimension(R.dimen.fab_margin);
       layout_marginEnd=this.getResources().getDimension(R.dimen.fab_margin);
       src="res/drawable/add.png";
       layout_height="wrap";
