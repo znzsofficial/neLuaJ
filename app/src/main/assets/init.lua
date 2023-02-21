@@ -1,2 +1,2 @@
-appname="MyApplication"
+appname="NeLuaJ"
 debug_mode=true

@@ -8,10 +8,12 @@ import "androidx.core.view.GravityCompat"
 import "androidx.coordinatorlayout.widget.CoordinatorLayout"
 import "androidx.drawerlayout.widget.DrawerLayout"
 import "androidx.appcompat.app.ActionBarDrawerToggle"
+import "com.google.android.material.dialog.MaterialAlertDialogBuilder"
 import "com.google.android.material.snackbar.Snackbar"
 import "com.google.android.material.navigation.NavigationView"
 import "com.google.android.material.floatingactionbutton.FloatingActionButton"
 import "com.bumptech.glide.Glide"
+import "util.ResUtil"
 import "res"
 
 --添加BackHome按钮用来当Drawer的Menu按钮
@@ -44,15 +46,29 @@ navigation.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSele
 
 --MaterialButton点击事件
 mBtn.onClick = function(view)
-  Snackbar.make(view,"Hello Word~",Snackbar.LENGTH_SHORT).show()
-end
-
---FloatingActionButton的点击事件
-floatingaction.onClick = function(view)
   Snackbar.make(view,"Hello Word~",Snackbar.LENGTH_SHORT)
   .setAction("OK",{onClick=function()
       print("OK")
     end})
+  .show()
+end
+
+--FloatingActionButton的点击事件
+floatingaction.onClick = function(view)
+  MaterialAlertDialogBuilder(this)
+  .setTitle("依赖库")
+  .setMessage([[
+androidx.appcompat 1.7.0-alpha01
+androidx.constraintlayout 2.2.0-alpha06
+androidx.preference 1.2.0
+com.google.android.material 1.9.0-alpha01
+com.github.bumptech.glide 4.14.2
+net.lingala.zip4j 2.11.3]])
+  .setNegativeButton("消极",nil)
+  .setNeutralButton("中立",function()
+  print(android.res.color.attr.colorTertiary)
+  end)
+  .setPositiveButton("积极",nil)
   .show()
 end
 

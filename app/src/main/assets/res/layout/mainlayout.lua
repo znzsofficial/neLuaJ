@@ -1,4 +1,6 @@
 local R = import "R"
+local ColorStateList = import "android.content.res.ColorStateList"
+local TypedValue = import "android.util.TypedValue"
 
 mainlayout = {
   import "androidx.drawerlayout.widget.DrawerLayout";
@@ -25,7 +27,17 @@ mainlayout = {
         id="mBtn";
         layout_gravity="center";
         layout_width="wrap";
-        text="Hello Word！";
+        text="Hello World！";
+        layout_height="wrap";
+      };
+      {
+        import "com.google.android.material.textview.MaterialTextView";
+        MaterialButton;
+        id="mTvw";
+        layout_gravity="center";
+        layout_width="wrap";
+        text="NeLuaJ Test";
+        textColor=android.res.color.attr.colorPrimary;
         layout_height="wrap";
       };
     };

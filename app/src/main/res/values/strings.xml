@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyApplication</string>
+    <string name="app_name">NeLuaJ</string>
     <string name="drawer_open">Close drawer</string>
     <string name="drawer_close">Open drawer</string>
     <string name="accsibility_service_description">辅助功能</string>
