@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdk 33
+    buildToolsVersion "33.0.3"
+    namespace 'github.znzsofficial.luaj'
+    testNamespace 'github.znzsofficial.luaj.test'
+
+    defaultConfig {
+        applicationId "github.znzsofficial.luaj"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1099
+        versionName "1.0"
+    }
+    
+    configurations {
+    
+        all*.exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+        all*.exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+    }
+    
+    compileOptions {
+		sourceCompatibility JavaVersion.VERSION_11
+		targetCompatibility JavaVersion.VERSION_11
+	}
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk {abiFilters 'armeabi-v7a', 'x86', 'arm64-v8a'}
+        }
+        debug {
+            minifyEnabled false
+            ndk {abiFilters 'armeabi-v7a', 'x86', 'arm64-v8a'}
+        }
+    }
+    sourceSets {
+        main {
+            //jniLibs.srcDirs = ['libs']
+        }
+    }
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    api fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.20-Beta'
+    //implementation 'org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20-Beta'
+    //api project(':androlua')
+    implementation 'androidx.appcompat:appcompat:1.7.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0-alpha07'
+    implementation "androidx.preference:preference:1.2.0"
+    implementation 'com.google.android.material:material:1.9.0-alpha02'
+    implementation 'com.github.bumptech.glide:glide:4.15.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+    implementation 'net.lingala.zip4j:zip4j:2.11.5'
+}
