@@ -1,16 +1,19 @@
 package com.androlua;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.LinearLayout;
 import androidx.activity.ComponentActivity;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
@@ -43,7 +46,25 @@ public class Welcome extends ComponentActivity {
     }*/
     if (checkInfo()) {
       LuaApplication.getInstance().setSharedData("UnZiped", false);
-      new UpdateTask().execute();
+      // new UpdateTask().execute();
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      Handler handler = new Handler(Looper.getMainLooper());
+
+      executor.execute(
+          () -> {
+            try {
+              unApk("assets/", localDir);
+            } catch (ZipException e) {
+              e.printStackTrace();
+            }
+            // Background work here
+            handler.post(
+                () -> {
+                  startActivity();
+                  LuaApplication.getInstance().setSharedData("UnZiped", true);
+                  // UI Thread work here
+                });
+          });
     } else {
       startActivity();
     }
@@ -104,52 +125,33 @@ public class Welcome extends ComponentActivity {
     return false;
   }
 
-  @SuppressLint("StaticFieldLeak")
-  private class UpdateTask extends AsyncTaskX<String, String, String> {
-    @Override
-    protected String doInBackground(String[] p1) {
-      // TODO: Implement this method
-      try {
-        unApk("assets/", localDir);
-      } catch (ZipException e) {
-        e.printStackTrace();
+  private void unApk(String dir, String extDir) throws ZipException {
+    File file = new File(extDir);
+    String tempDir = getCacheDir().getPath();
+    rmDir(file);
+    ZipFile zipFile = new ZipFile(getApplicationInfo().publicSourceDir);
+    zipFile.extractFile(dir, tempDir);
+    new File(tempDir + "/" + dir).renameTo(file);
+  }
+
+  private void rmDir(File file, String str) {
+    if (file.isDirectory()) {
+      for (File file2 : file.listFiles()) {
+        rmDir(file2, str);
       }
-      return null;
+      file.delete();
     }
-
-    protected void onPostExecute(String result) {
-      startActivity();
-      LuaApplication.getInstance().setSharedData("UnZiped", true);
+    if (file.getName().endsWith(str)) {
+      file.delete();
     }
+  }
 
-    private void unApk(String dir, String extDir) throws ZipException {
-      File file = new File(extDir);
-      String tempDir = getCacheDir().getPath();
-      rmDir(file);
-      ZipFile zipFile = new ZipFile(getApplicationInfo().publicSourceDir);
-      zipFile.extractFile(dir, tempDir);
-      new File(tempDir + "/" + dir).renameTo(file);
-    }
-
-    private void rmDir(File file, String str) {
-      if (file.isDirectory()) {
-        for (File file2 : file.listFiles()) {
-          rmDir(file2, str);
-        }
-        file.delete();
-      }
-      if (file.getName().endsWith(str)) {
-        file.delete();
+  private boolean rmDir(File file) {
+    if (file.isDirectory()) {
+      for (File file2 : file.listFiles()) {
+        rmDir(file2);
       }
     }
-
-    private boolean rmDir(File file) {
-      if (file.isDirectory()) {
-        for (File file2 : file.listFiles()) {
-          rmDir(file2);
-        }
-      }
-      return file.delete();
-    }
+    return file.delete();
   }
 }

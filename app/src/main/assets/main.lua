@@ -89,6 +89,9 @@ function onCreateOptionsMenu(menu)
   menu.add("Setting").onMenuItemClick=function(a)
     print "Setting"
   end
+  menu.add("Exit").onMenuItemClick=function(a)
+    activity.finish()
+  end
 end
 
 Glide.with(this).asDrawable().load(R.drawable.ic_material).into(heard_image);

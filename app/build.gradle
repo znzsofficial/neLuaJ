@@ -5,6 +5,7 @@ android {
     buildToolsVersion "33.0.3"
     namespace 'github.znzsofficial.luaj'
     testNamespace 'github.znzsofficial.luaj.test'
+    //compileSdkPreview "UpsideDownCake"
 
     defaultConfig {
         applicationId "github.znzsofficial.luaj"
@@ -12,10 +13,10 @@ android {
         targetSdkVersion 29
         versionCode 1099
         versionName "1.0"
+        //targetSdkPreview "UpsideDownCake"
     }
     
     configurations {
-    
         all*.exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
         all*.exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
     }
@@ -49,14 +50,22 @@ android {
 
 dependencies {
     api fileTree(dir: "libs", include: ["*.jar"])
+    
+    //kotlin
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.20-Beta'
     //implementation 'org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20-Beta'
-    //api project(':androlua')
+    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    
+    //AndroidX
+    //implementation 'androidx.activity:activity:1.8.0-alpha01'
     implementation 'androidx.appcompat:appcompat:1.7.0-alpha02'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0-alpha07'
     implementation "androidx.preference:preference:1.2.0"
+    //Material
     implementation 'com.google.android.material:material:1.9.0-alpha02'
+    //Glide
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+    //Zip4J
     implementation 'net.lingala.zip4j:zip4j:2.11.5'
 }
