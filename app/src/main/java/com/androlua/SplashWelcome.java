@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.LinearLayout;
 import androidx.activity.ComponentActivity;
+import androidx.core.splashscreen.SplashScreen;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.concurrent.Executors;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
-public class Welcome extends ComponentActivity {
+public class SplashWelcome extends ComponentActivity {
 
   private boolean isUpdata;
   private LuaApplication app;
@@ -33,8 +34,8 @@ public class Welcome extends ComponentActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     LinearLayout layout = new LinearLayout(this);
+    SplashScreen.installSplashScreen(this);
     setContentView(layout);
     app = (LuaApplication) getApplication();
     localDir = app.getLuaDir();
@@ -74,7 +75,7 @@ public class Welcome extends ComponentActivity {
     try {
       InputStream f = getAssets().open("main.lua");
       if (f != null) {
-        Intent intent = new Intent(Welcome.this, LuaActivity.class);
+        Intent intent = new Intent(SplashWelcome.this, LuaActivity.class);
         if (isVersionChanged) {
           intent.putExtra("isVersionChanged", isVersionChanged);
           intent.putExtra("newVersionName", mVersionName);

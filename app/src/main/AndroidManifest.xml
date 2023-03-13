@@ -56,9 +56,9 @@
             android:excludeFromRecents="false"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name="com.androlua.Welcome"
+            android:name="com.androlua.SplashWelcome"
             android:configChanges="orientation|screenSize|keyboardHidden"
-			android:theme="@android:style/Theme.Wallpaper.NoTitleBar.Fullscreen"
+			android:theme="@style/MySplashTheme"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -21,7 +21,7 @@ mainlayout = {
       layout_height="fill";
       orientation="vertical";
       layout_width="fill";
-      {
+      --[[   {
         import "com.google.android.material.button.MaterialButton";
         MaterialButton;
         id="mBtn";
@@ -40,6 +40,15 @@ mainlayout = {
         textColor=android.res.color.attr.colorPrimary;
         layout_height="wrap";
       };
+      ]]
+      {
+        import "androidx.recyclerview.widget.RecyclerView";
+        RecyclerView,
+        id="recycler_app",
+        HasFixedSize=true,
+        layout_width="fill",
+        layout_height="fill",
+      },
     };
     {
       import "com.google.android.material.floatingactionbutton.FloatingActionButton";

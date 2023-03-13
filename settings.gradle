@@ -10,7 +10,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-    }
+        maven{ url "https://jitpack.io" }
+        maven{ url "https://repo.eclipse.org/content/groups/releases/" }
+        maven{ url "https://maven.aliyun.com/nexus/content/groups/public/"}
+        }
 }
-rootProject.name = "My Application"
+rootProject.name = "NeLuaJ"
 include ':app'
